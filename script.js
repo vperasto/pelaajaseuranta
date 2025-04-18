@@ -30,7 +30,12 @@ function renderPlayers() {
   players.forEach(p => {
     const div = document.createElement('div');
     div.className = `player ${p.onCourt ? 'on-court' : 'bench'}`;
-    if (p.fouls >= 5) div.classList.add('fouled-out');
+    div.style.position = 'relative'; // tarvitaan X-napin asemointiin
+
+    // Lisää opacity jos virheitä 5 tai enemmän
+    if (Number(p.fouls) >= 5) {
+      div.style.opacity = '0.5';
+    }
 
     div.innerHTML = `
       <h3>#${p.number} ${p.name}</h3>
@@ -58,10 +63,25 @@ function renderPlayers() {
                onclick="${p.fouls >= 5 ? '' : `toggleCourt(${p.id})`}">🔁</div>
         </div>
       </div>
-      <div style="text-align:right; margin-top:0.5rem;">
-        <button onclick="removePlayer(${p.id})" style="background:transparent; border:none; color:white; font-size:1.2rem; cursor:pointer;" title="Poista pelaaja">❌</button>
-      </div>
     `;
+
+    // ❌-nappi oikeaan yläkulmaan
+    const removeButton = document.createElement('button');
+    removeButton.innerHTML = '❌';
+    removeButton.title = 'Poista pelaaja';
+    removeButton.onclick = () => removePlayer(p.id);
+    Object.assign(removeButton.style, {
+      position: 'absolute',
+      top: '5px',
+      right: '10px',
+      background: 'transparent',
+      border: 'none',
+      color: 'white',
+      fontSize: '1.2rem',
+      cursor: 'pointer',
+    });
+
+    div.appendChild(removeButton);
     playerList.appendChild(div);
   });
 }
