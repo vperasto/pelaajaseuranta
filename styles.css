@@ -135,6 +135,14 @@ form input, form button {
   margin-top: 2rem;
   font-size: 0.9rem;
 }
+form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
 
 @media screen and (max-width: 600px) {
   .player {
