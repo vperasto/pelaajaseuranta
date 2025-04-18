@@ -11,9 +11,9 @@
   <div class="container">
     <h1>Pelaajaseuranta</h1>
    <form id="playerForm">
-     <input type="number" id="playerNumber" placeholder="Numero" required style="width: 80px;" />
-     <input type="text" id="playerName" placeholder="Pelaajan nimi" required style="flex: 1;" />
-     <button type="submit">Lisää pelaaja</button>
+     <input type="number" id="playerNumber" placeholder="nro" required style="width: 40px;" />
+     <input type="text" id="playerName" placeholder="Pelaaja" required style="flex: 1;" />
+     <button type="submit">+</button>
    </form>
 
     <div id="playerList" class="players"></div>
@@ -21,8 +21,7 @@
       <h2>Vaihtohistoria</h2>
       <ul id="historyList"></ul>
     </div>
-    <button onclick="resetData()">Nollaa kaikki</button>
-  </div>
-  <script src="script.js"></script>
+    <center><button onclick="resetData()">Nollaa kaikki</button></center>
+  </div>  <script src="script.js"></script>
 </body>
 </html>
