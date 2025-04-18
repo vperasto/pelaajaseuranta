@@ -1,169 +1,110 @@
-/* YLEISASU */
 body {
   margin: 0;
   font-family: 'Orbitron', sans-serif;
-  background: #0a0a0a;
+  background: #121212;
   color: #ffffff;
-  line-height: 1.5;
 }
 
 .container {
   padding: 1rem;
-  max-width: 900px;
+  max-width: 800px;
   margin: auto;
 }
 
 h1, h2 {
   text-align: center;
   margin: 1rem 0;
-  color: #00f0ff;
-  text-shadow: 0 0 10px #00f0ff;
 }
 
-/* LOMAKE */
 form {
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
   justify-content: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 form input, form button {
-  padding: 0.6rem;
+  padding: 0.5rem;
   font-size: 1rem;
-  border: none;
-  border-radius: 6px;
-  background: #1f1f1f;
-  color: #fff;
-  outline: none;
 }
 
-form input::placeholder {
-  color: #aaa;
-}
-
-form button {
-  background: #00f0ff;
-  color: #000;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-form button:hover {
-  background: #00aaff;
-}
-
-/* PELAAJALISTA */
 .players {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-/* PELAAJAKORTTI */
 .player {
-  background: #1b1b1b;
-  border: 2px solid #444;
-  border-radius: 10px;
-  padding: 1rem;
-  width: 200px;
-  text-align: center;
-  transition: 0.3s;
-  box-shadow: 0 0 10px #111;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1c1c1c;
+  border: 1px solid #333;
+  border-left: 5px solid transparent;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  transition: background 0.3s;
 }
 
 .player.on-court {
-  border-color: #00ff99;
-  box-shadow: 0 0 15px #00ff99;
+  border-left-color: #2196f3;
 }
 
 .player.bench {
-  border-color: #ff0055;
-  box-shadow: 0 0 15px #ff0055;
+  border-left-color: #e53935;
 }
 
-.player h3 {
-  margin: 0.4rem 0;
-  color: #fff;
-  font-size: 1.2rem;
+.player .info {
+  flex: 1;
 }
 
-/* NAPIT */
+.player .info h3 {
+  margin: 0 0 0.2rem;
+  font-size: 1.1rem;
+}
+
+.player .stats {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+}
+
+.player .buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  justify-content: flex-end;
+  margin-left: 1rem;
+}
+
 .player .buttons button {
-  margin: 0.2rem;
-  font-size: 1rem;
-  padding: 0.4rem 0.6rem;
-  background: #222;
-  color: #fff;
-  border: 1px solid #555;
-  border-radius: 6px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
   cursor: pointer;
-  transition: 0.2s;
+  font-size: 0.95rem;
+  transition: background 0.2s;
 }
 
 .player .buttons button:hover {
-  background: #00f0ff;
-  color: #000;
-  border-color: #00f0ff;
+  background: #555;
 }
 
-/* VAIHTOHISTORIA */
 .history {
   margin-top: 2rem;
 }
 
-.history h2 {
-  color: #ffaa00;
-  text-shadow: 0 0 10px #ffaa00;
-}
-
-#historyList {
-  list-style: none;
-  padding-left: 1rem;
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-#historyList li {
-  padding: 0.3rem 0;
-  border-bottom: 1px solid #333;
-  color: #ccc;
-}
-
-/* KENTTÄSTATUS / TULOS */
-.kentta-status {
-  text-align: center;
-  margin: 1rem 0;
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: #00f0ff;
-}
-
-/* NOLLAA */
-button[onclick="resetData()"] {
-  display: block;
-  margin: 2rem auto;
-  padding: 0.7rem 1.5rem;
-  font-size: 1rem;
-  background: #ff0033;
-  border: none;
-  border-radius: 8px;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-button[onclick="resetData()"]:hover {
-  background: #cc0022;
-}
-
-/* MOBIILI */
 @media screen and (max-width: 600px) {
   .player {
-    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .player .buttons {
+    justify-content: flex-start;
+    margin-left: 0;
   }
 }
