@@ -57,6 +57,11 @@ form input, form button {
   background-color: #a10400;
 }
 
+.player-five-fouls{
+  border-left-color: #4f4f4f;
+  background-color: #2b2c2d;
+}
+
 .player h3 {
   margin: 0 0 0.5rem 0;
   font-size: 1.1rem;
