@@ -34,7 +34,7 @@ function renderPlayers() {
 
     // Lisää opacity jos virheitä 5 tai enemmän
     if (Number(p.fouls) >= 5) {
-      div.className = `player-five-fouls'}`;
+      div.className = `player-five-fouls`;
       div.style.opacity = '0.5';
     }
 
