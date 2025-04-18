@@ -63,35 +63,38 @@ form input, form button {
 
 .player-layout {
   display: flex;
-  justify-content: space-around;
-  gap: 1rem;
+  justify-content: space-between;
+  gap: 0.5rem;
 }
 
 .stat-block {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
-  min-width: 60px;
+  gap: 0.3rem;
 }
 
-.icon {
-  font-size: 1.8rem;
+.stat-block .icon {
+  font-size: 1.5rem;
+  grid-column: 1;
 }
 
-.big-number {
-  font-size: 1.8rem;
-  margin: 0.2rem 0;
+.stat-block .big-number {
+  font-size: 1.4rem;
+  text-align: center;
+  grid-column: 2;
 }
 
-.buttons-vertical {
+.stat-block .buttons-vertical {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+  grid-column: 3;
 }
 
-.buttons-vertical button {
+.stat-block .buttons-vertical button {
   font-size: 1rem;
-  padding: 0.3rem 0.5rem;
+  padding: 0.2rem 0.4rem;
   background: #444;
   color: white;
   border: none;
@@ -99,8 +102,33 @@ form input, form button {
   cursor: pointer;
 }
 
-.buttons-vertical button:hover {
+.stat-block .buttons-vertical button:hover {
   background: #666;
+}
+
+.substitute-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.substitute-block .icon {
+  font-size: 1.8rem;
+  margin-bottom: 0.3rem;
+}
+
+.substitute-block button {
+  background: #555;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.substitute-block button:hover {
+  background: #777;
 }
 
 .history {
@@ -111,17 +139,5 @@ form input, form button {
 @media screen and (max-width: 600px) {
   .player {
     width: 100%;
-  }
-}
-
-
-@media screen and (max-width: 600px) {
-  .player {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .player .buttons {
-    justify-content: flex-start;
-    margin-left: 0;
   }
 }
