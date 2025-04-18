@@ -4,9 +4,6 @@ let historyEntries = JSON.parse(localStorage.getItem('history')) || [];
 const playerForm = document.getElementById('playerForm');
 const playerList = document.getElementById('playerList');
 const historyList = document.getElementById('historyList');
-const totalPoints = players.reduce((sum, p) => sum + p.points, 0);
-document.getElementById('totalPoints').textContent = `Joukkueen pisteet: ${totalPoints}`;
-
 
 playerForm.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -34,15 +31,19 @@ function renderPlayers() {
     const div = document.createElement('div');
     div.className = `player ${p.onCourt ? 'on-court' : 'bench'}`;
     div.innerHTML = `
-      <h3>#${p.number} ${p.name}</h3>
-      <p>Pisteet: ${p.points}</p>
-      <p>Virheet: ${p.fouls}</p>
+      <div class="info">
+        <h3>#${p.number} ${p.name}</h3>
+        <div class="stats">
+          <span>🏀 ${p.points}</span>
+          <span>🚫 ${p.fouls}</span>
+        </div>
+      </div>
       <div class="buttons">
-        <button onclick="changePoints(${p.id}, 1)">+1</button>
-        <button onclick="changePoints(${p.id}, -1)">-1</button>
-        <button onclick="changeFouls(${p.id}, 1)">F+1</button>
-        <button onclick="changeFouls(${p.id}, -1)">F-1</button>
-        <button onclick="toggleCourt(${p.id})">${p.onCourt ? 'Vaihda pois' : 'Vaihda kentälle'}</button>
+        <button onclick="changePoints(${p.id}, 1)">🏀➕</button>
+        <button onclick="changePoints(${p.id}, -1)">🏀➖</button>
+        <button onclick="changeFouls(${p.id}, 1)">🚫➕</button>
+        <button onclick="changeFouls(${p.id}, -1)">🚫➖</button>
+        <button onclick="toggleCourt(${p.id})">🔁</button>
       </div>
     `;
     playerList.appendChild(div);
