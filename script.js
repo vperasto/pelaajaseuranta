@@ -49,9 +49,8 @@ function renderPlayers() {
             <button onclick="changeFouls(${p.id}, -1)">－</button>
           </div>
         </div>
-        <div class="substitute-block">
-          <div class="icon">🔁</div>
-          <button onclick="toggleCourt(${p.id})">Vaihda</button>
+        <div class="substitute-block">     
+          <div class="icon" onclick="toggleCourt(${p.id})">🔁</div>
         </div>
       </div>
     `;
