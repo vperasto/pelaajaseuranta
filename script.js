@@ -49,18 +49,16 @@ function renderPlayers() {
             <button onclick="changeFouls(${p.id}, -1)">－</button>
           </div>
         </div>
-        <div class="stat-block">
+        <div class="substitute-block">
           <div class="icon">🔁</div>
-          <div class="big-number">&nbsp;</div>
-          <div class="buttons-vertical">
-            <button onclick="toggleCourt(${p.id})">Vaihda</button>
-          </div>
+          <button onclick="toggleCourt(${p.id})">Vaihda</button>
         </div>
       </div>
     `;
     playerList.appendChild(div);
   });
 }
+
 
 function changePoints(id, amount) {
   const player = players.find(p => p.id === id);
