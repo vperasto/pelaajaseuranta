@@ -30,9 +30,8 @@ function renderPlayers() {
   players.forEach(p => {
     const div = document.createElement('div');
     div.className = `player ${p.onCourt ? 'on-court' : 'bench'}`;
-    div.style.position = 'relative'; // tarvitaan X-napin asemointiin
+    div.style.position = 'relative';
 
-    // Lisää opacity jos virheitä 5 tai enemmän
     if (Number(p.fouls) >= 5) {
       div.className = `player player-five-fouls`;
       div.style.opacity = '0.5';
@@ -66,7 +65,6 @@ function renderPlayers() {
       </div>
     `;
 
-    // ❌-nappi oikeaan yläkulmaan
     const removeButton = document.createElement('button');
     removeButton.innerHTML = '❌';
     removeButton.title = 'Poista pelaaja';
@@ -98,8 +96,18 @@ function changePoints(id, amount) {
 function changeFouls(id, amount) {
   const player = players.find(p => p.id === id);
   if (!player) return;
+  const previousFouls = player.fouls;
   player.fouls = Math.max(0, player.fouls + amount);
+
+  if (player.fouls >= 5 && previousFouls < 5) {
+    const entry = `${player.name} – virheet täynnä!`;
+    if (!historyEntries.includes(entry)) {
+      historyEntries.unshift(entry);
+    }
+  }
+
   renderPlayers();
+  renderHistory();
   saveData();
 }
 
