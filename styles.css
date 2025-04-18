@@ -7,7 +7,7 @@ body {
 
 .container {
   padding: 1rem;
-  max-width: 800px;
+  max-width: 900px;
   margin: auto;
 }
 
@@ -31,21 +31,20 @@ form input, form button {
 
 .players {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
 }
 
 .player {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   background: #1c1c1c;
   border: 1px solid #333;
   border-left: 5px solid transparent;
   border-radius: 6px;
-  padding: 0.5rem 1rem;
+  padding: 0.8rem 1rem;
   font-size: 0.95rem;
-  transition: background 0.3s;
+  width: 260px;
+  box-sizing: border-box;
 }
 
 .player.on-court {
@@ -56,47 +55,65 @@ form input, form button {
   border-left-color: #e53935;
 }
 
-.player .info {
-  flex: 1;
-}
-
-.player .info h3 {
-  margin: 0 0 0.2rem;
+.player h3 {
+  margin: 0 0 0.5rem 0;
   font-size: 1.1rem;
+  text-align: center;
 }
 
-.player .stats {
+.player-layout {
   display: flex;
+  justify-content: space-around;
   gap: 1rem;
-  font-size: 0.9rem;
 }
 
-.player .buttons {
+.stat-block {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-  justify-content: flex-end;
-  margin-left: 1rem;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
 }
 
-.player .buttons button {
-  background: #333;
+.icon {
+  font-size: 1.8rem;
+}
+
+.big-number {
+  font-size: 1.8rem;
+  margin: 0.2rem 0;
+}
+
+.buttons-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.buttons-vertical button {
+  font-size: 1rem;
+  padding: 0.3rem 0.5rem;
+  background: #444;
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 0.3rem 0.5rem;
   cursor: pointer;
-  font-size: 0.95rem;
-  transition: background 0.2s;
 }
 
-.player .buttons button:hover {
-  background: #555;
+.buttons-vertical button:hover {
+  background: #666;
 }
 
 .history {
   margin-top: 2rem;
+  font-size: 0.9rem;
 }
+
+@media screen and (max-width: 600px) {
+  .player {
+    width: 100%;
+  }
+}
+
 
 @media screen and (max-width: 600px) {
   .player {
