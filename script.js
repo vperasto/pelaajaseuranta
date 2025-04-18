@@ -4,6 +4,9 @@ let historyEntries = JSON.parse(localStorage.getItem('history')) || [];
 const playerForm = document.getElementById('playerForm');
 const playerList = document.getElementById('playerList');
 const historyList = document.getElementById('historyList');
+const totalPoints = players.reduce((sum, p) => sum + p.points, 0);
+document.getElementById('totalPoints').textContent = `Joukkueen pisteet: ${totalPoints}`;
+
 
 playerForm.addEventListener('submit', (e) => {
   e.preventDefault();
