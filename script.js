@@ -30,6 +30,8 @@ function renderPlayers() {
   players.forEach(p => {
     const div = document.createElement('div');
     div.className = `player ${p.onCourt ? 'on-court' : 'bench'}`;
+    if (p.fouls >= 5) div.classList.add('fouled-out');
+
     div.innerHTML = `
       <h3>#${p.number} ${p.name}</h3>
       <div class="player-layout">
@@ -37,31 +39,36 @@ function renderPlayers() {
           <div class="icon">🏀</div>
           <div class="big-number">${p.points}</div>
           <div class="buttons-vertical">
-            <button onclick="changePoints(${p.id}, 1)">＋</button>
-            <button onclick="changePoints(${p.id}, -1)">－</button>
+            <button onclick="changePoints(${p.id}, 1)" ${p.fouls >= 5 || !p.onCourt ? 'disabled' : ''}>＋</button>
+            <button onclick="changePoints(${p.id}, -1)" ${p.fouls >= 5 || !p.onCourt ? 'disabled' : ''}>－</button>
           </div>
         </div>
         <div class="stat-block">
           <div class="icon">🚫</div>
           <div class="big-number">${p.fouls}</div>
           <div class="buttons-vertical">
-            <button onclick="changeFouls(${p.id}, 1)">＋</button>
+            <button onclick="changeFouls(${p.id}, 1)" ${p.fouls >= 5 || !p.onCourt ? 'disabled' : ''}>＋</button>
             <button onclick="changeFouls(${p.id}, -1)">－</button>
           </div>
         </div>
-        <div class="substitute-block">     
-          <div class="icon" onclick="toggleCourt(${p.id})">🔁</div>
+        <div class="substitute-block">
+          <div class="icon"
+               style="cursor: ${p.fouls >= 5 ? 'not-allowed' : 'pointer'}; color: ${p.onCourt ? '#2196f3' : '#e53935'}"
+               title="${p.fouls >= 5 ? 'Pelaajalla virheet täynnä' : p.onCourt ? 'Laita vaihtoon' : 'Laita kentälle'}"
+               onclick="${p.fouls >= 5 ? '' : `toggleCourt(${p.id})`}">🔁</div>
         </div>
+      </div>
+      <div style="text-align:right; margin-top:0.5rem;">
+        <button onclick="removePlayer(${p.id})" style="background:transparent; border:none; color:white; font-size:1.2rem; cursor:pointer;" title="Poista pelaaja">❌</button>
       </div>
     `;
     playerList.appendChild(div);
   });
 }
 
-
 function changePoints(id, amount) {
   const player = players.find(p => p.id === id);
-  if (!player) return;
+  if (!player || player.fouls >= 5 || !player.onCourt) return;
   player.points = Math.max(0, player.points + amount);
   renderPlayers();
   saveData();
@@ -77,7 +84,7 @@ function changeFouls(id, amount) {
 
 function toggleCourt(id) {
   const player = players.find(p => p.id === id);
-  if (!player) return;
+  if (!player || player.fouls >= 5) return;
   player.onCourt = !player.onCourt;
   const time = new Date().toLocaleTimeString();
   const log = `${time} – #${player.number} ${player.name} ${player.onCourt ? 'kentälle' : 'penkille'}`;
@@ -85,6 +92,16 @@ function toggleCourt(id) {
   renderHistory();
   renderPlayers();
   saveData();
+}
+
+function removePlayer(id) {
+  const player = players.find(p => p.id === id);
+  if (!player) return;
+  if (confirm(`Oletko varma että haluat poistaa ${player.name}?`)) {
+    players = players.filter(p => p.id !== id);
+    renderPlayers();
+    saveData();
+  }
 }
 
 function renderHistory() {
