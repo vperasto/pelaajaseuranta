@@ -31,19 +31,31 @@ function renderPlayers() {
     const div = document.createElement('div');
     div.className = `player ${p.onCourt ? 'on-court' : 'bench'}`;
     div.innerHTML = `
-      <div class="info">
-        <h3>#${p.number} ${p.name}</h3>
-        <div class="stats">
-          <span>🏀 ${p.points}</span>
-          <span>🚫 ${p.fouls}</span>
+      <h3>#${p.number} ${p.name}</h3>
+      <div class="player-layout">
+        <div class="stat-block">
+          <div class="icon">🏀</div>
+          <div class="big-number">${p.points}</div>
+          <div class="buttons-vertical">
+            <button onclick="changePoints(${p.id}, 1)">＋</button>
+            <button onclick="changePoints(${p.id}, -1)">－</button>
+          </div>
         </div>
-      </div>
-      <div class="buttons">
-        <button onclick="changePoints(${p.id}, 1)">🏀➕</button>
-        <button onclick="changePoints(${p.id}, -1)">🏀➖</button>
-        <button onclick="changeFouls(${p.id}, 1)">🚫➕</button>
-        <button onclick="changeFouls(${p.id}, -1)">🚫➖</button>
-        <button onclick="toggleCourt(${p.id})">🔁</button>
+        <div class="stat-block">
+          <div class="icon">🚫</div>
+          <div class="big-number">${p.fouls}</div>
+          <div class="buttons-vertical">
+            <button onclick="changeFouls(${p.id}, 1)">＋</button>
+            <button onclick="changeFouls(${p.id}, -1)">－</button>
+          </div>
+        </div>
+        <div class="stat-block">
+          <div class="icon">🔁</div>
+          <div class="big-number">&nbsp;</div>
+          <div class="buttons-vertical">
+            <button onclick="toggleCourt(${p.id})">Vaihda</button>
+          </div>
+        </div>
       </div>
     `;
     playerList.appendChild(div);
