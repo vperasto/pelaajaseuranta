@@ -35,7 +35,7 @@ function renderPlayers() {
     // Lisää opacity jos virheitä 5 tai enemmän
     if (Number(p.fouls) >= 5) {
       div.style.opacity = '0.5';
-      div.style.background-color = '#1e1e1e';
+      div.style.background = '#1e1e1e';
     }
 
     div.innerHTML = `
