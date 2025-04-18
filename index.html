@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Korisvalmentajan Apuri</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet"/>
+</head>
+<body>
+  <div class="container">
+    <h1>Korisvalmentajan Apuri</h1>
+    <form id="playerForm">
+      <input type="text" id="playerName" placeholder="Nimi" required />
+      <input type="number" id="playerNumber" placeholder="Numero" required />
+      <button type="submit">Lisää pelaaja</button>
+    </form>
+    <div id="playerList" class="players"></div>
+    <div class="history">
+      <h2>Vaihtohistoria</h2>
+      <ul id="historyList"></ul>
+    </div>
+    <button onclick="resetData()">Nollaa kaikki</button>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

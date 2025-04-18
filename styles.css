@@ -1,0 +1,75 @@
+body {
+  margin: 0;
+  font-family: 'Orbitron', sans-serif;
+  background: #121212;
+  color: #ffffff;
+}
+
+.container {
+  padding: 1rem;
+  max-width: 800px;
+  margin: auto;
+}
+
+h1, h2 {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+form input, form button {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.players {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.player {
+  border: 2px solid #444;
+  border-radius: 8px;
+  padding: 1rem;
+  width: 180px;
+  text-align: center;
+  background: #1e1e1e;
+  transition: 0.3s;
+}
+
+.player.on-court {
+  border-color: blue;
+}
+
+.player.bench {
+  border-color: red;
+}
+
+.player h3 {
+  margin: 0.2rem 0;
+}
+
+.player .buttons button {
+  margin: 0.2rem;
+  font-size: 1.2rem;
+  padding: 0.2rem 0.5rem;
+}
+
+.history {
+  margin-top: 2rem;
+}
+
+@media screen and (max-width: 600px) {
+  .player {
+    width: 100%;
+  }
+}
