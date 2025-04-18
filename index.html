@@ -10,11 +10,12 @@
 <body>
   <div class="container">
     <h1>Pelaajaseuranta</h1>
-    <form id="playerForm">
-      <input type="text" id="playerName" placeholder="Nimi" required />
-      <input type="number" id="playerNumber" placeholder="Numero" required />
-      <button type="submit">Lisää pelaaja</button>
-    </form>
+   <form id="playerForm">
+     <input type="number" id="playerNumber" placeholder="Numero" required style="width: 80px;" />
+     <input type="text" id="playerName" placeholder="Pelaajan nimi" required style="flex: 1;" />
+     <button type="submit">Lisää pelaaja</button>
+   </form>
+
     <div id="playerList" class="players"></div>
     <div class="history">
       <h2>Vaihtohistoria</h2>
