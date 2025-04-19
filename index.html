@@ -1,62 +1,27 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kahvakuulatreeni</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pelaajaseuranta</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet"/>
 </head>
 <body>
-  <div id="app">
+  <div class="container">
+    <h1>Pelaajaseuranta</h1>
+   <form id="playerForm">
+     <input type="number" id="playerNumber" placeholder="nro" required style="width: 40px;" />
+     <input type="text" id="playerName" placeholder="Pelaaja" required style="flex: 1;" />
+     <button type="submit">+</button>
+   </form>
 
-    <!-- Header -->
-    <header>
-      <h1>Kahvakuulakurssi – Ohjaajan Työkalu</h1>
-      <button id="toggle-training-select">Valitse treeni ⯆</button>
-    </header>
-
-    <!-- Treenin valinta (Piilotettava) -->
-    <section id="training-select" class="collapsible">
-      <h2>Valitse treeni</h2>
-      <select id="training-dropdown">
-        <option value="">-- Valitse viikkotreeni --</option>
-        <option value="week1">Viikko 1</option>
-        <option value="week2">Viikko 2</option>
-        <option value="week3">Viikko 3</option>
-        <option value="presetA">Pikatreeni A</option>
-        <option value="presetB">Pikatreeni B</option>
-        <option value="presetC">Pikatreeni C</option>
-      </select>
-    </section>
-
-    <main>
-      <!-- Treenilista (vasen sarake) -->
-      <aside id="exercise-list">
-        <h2>Harjoitukset</h2>
-        <ul id="exercise-items">
-          <!-- Harjoitteet listataan tänne -->
-        </ul>
-      </aside>
-
-      <!-- Harjoitusnäkymä (keskellä) -->
-      <section id="exercise-display">
-        <h2 id="exercise-name">Valitse treeni</h2>
-        <img id="exercise-image" src="" alt="Harjoituskuva" style="display: none;">
-        <div id="timer">
-          <span id="time-remaining">00:00</span>
-          <p id="timer-label">Odottamassa...</p>
-        </div>
-        <div class="controls">
-          <button id="prev-btn">⏮ Edellinen</button>
-          <button id="pause-btn">⏸ Tauko</button>
-          <button id="next-btn">⏭ Seuraava</button>
-          <button id="stop-btn">⏹ Lopeta</button>
-        </div>
-      </section>
-    </main>
-
-  </div>
-
-  <script src="app.js"></script>
+    <div id="playerList" class="players"></div>
+    <div class="history">
+      <h2>Vaihtohistoria</h2>
+      <ul id="historyList"></ul>
+    </div>
+    <center><button onclick="resetData()">Nollaa kaikki</button></center>
+  </div>  <script src="script.js"></script>
 </body>
 </html>
