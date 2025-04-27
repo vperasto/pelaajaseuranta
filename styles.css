@@ -1,146 +1,65 @@
-/* === Koko styles.css alla (sisältää aiemmat ja uudet) === */
+/* === Koko styles.css === */
 
-/* ... (kaikki aiemmat tyylit tähän) ... */
-
-/* === Erotinviivan tyyli === */
-hr.section-divider {
-    border: none;
-    border-top: 1px solid #444;
-    margin: 1.5rem 0;
-}
-
-/* === Pelinappien tyylit (päivitetty) === */
-.game-controls {
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap; /* Sallitaan rivitys, jos ei mahdu */
-  gap: 0.8rem; /* Pienennetty hieman väliä, jotta mahtuu paremmin */
-}
-
-.game-controls button {
-  padding: 0.6rem 1rem;
-  font-size: 0.9rem; /* Pienennetty hieman fonttikokoa, jotta tekstit mahtuvat */
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
+/* === Perustyylit === */
+body {
+  margin: 0;
   font-family: 'Orbitron', sans-serif;
+  background: #121212;
+  color: #ffffff;
 }
 
-/* Aloitusnappi */
-.game-controls button#startGameBtn {
+.container {
+  padding: 1rem;
+  max-width: 900px;
+  margin: auto;
+}
+
+h1 {
+  text-align: center;
+  margin: 1rem 0 1.5rem 0; /* Lisätty vähän marginaalia alas */
+}
+
+/* === Lomake pelaajan lisäykseen === */
+form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+form input, form button {
+  padding: 0.5rem;
+  font-size: 1rem;
+  font-family: 'Orbitron', sans-serif; /* Varmistetaan fontti */
+}
+form input[type="number"] {
+    text-align: center;
+}
+form button[type="submit"] {
+    min-width: 40px; /* Sama leveys kuin numerokentällä */
     background-color: #4CAF50;
-    color: white;
-}
-.game-controls button#startGameBtn:disabled {
-    background-color: #a5d6a7;
-    color: #e8f5e9;
-    cursor: not-allowed;
-}
-
-/* UUSI: Jaksonappi */
-.game-controls button#markPeriodBtn {
-    background-color: #2196F3; /* Sininen */
-    color: white;
-}
-.game-controls button#markPeriodBtn:disabled {
-    background-color: #90caf9; /* Haalea sininen */
-    color: #e3f2fd;
-    cursor: not-allowed;
-}
-/* Jaksonapin väliaikainen "Merkitty!" tila */
-.game-controls button#markPeriodBtn.marked {
-    background-color: #ffc107; /* Keltainen palaute */
-    color: #333;
-}
-
-
-/* Lopetusnappi */
-.game-controls button#endGameBtn {
-    background-color: #f44336;
-    color: white;
-}
-.game-controls button#endGameBtn:disabled {
-    background-color: #ef9a9a;
-    color: #ffebee;
-    cursor: not-allowed;
-}
-
-/* === Historian otsikon ja kopiointinapin tyylit === */
-.history-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-}
-.history-header h2 {
-    margin: 0;
-    text-align: left;
-}
-.history-header button#copyHistoryBtn {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.9rem;
-    cursor: pointer;
-    background-color: #555;
     color: white;
     border: none;
     border-radius: 4px;
-}
-.history-header button#copyHistoryBtn:hover {
-    background-color: #777;
-}
-.history-header button#copyHistoryBtn:disabled {
-    background-color: #4CAF50;
-    cursor: default;
-}
-
-/* === Nollausnappien keskitys ja tyylit (päivitetty) === */
-.reset-controls {
-    text-align: center;
-    margin-top: 2rem;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap; /* Varmistetaan rivitys pienillä näytöillä */
-    gap: 1rem; /* Väliä nappien välille */
-}
-
-/* Yleinen tyyli reset-lohkon napeille */
-.reset-controls button {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem; /* Sama fonttikoko kuin pelinapeissa */
-    border: none;
-    border-radius: 5px;
     cursor: pointer;
-    font-family: 'Orbitron', sans-serif;
 }
-
-/* Tyhjennä historia -nappi */
-.reset-controls button#clearHistoryBtn {
-    background-color: #ff9800; /* Oranssi */
-    color: white;
-}
-.reset-controls button#clearHistoryBtn:hover {
-    background-color: #fb8c00;
-}
-.reset-controls button#clearHistoryBtn:disabled {
-    background-color: #ffcc80;
-    color: #fff3e0;
-    cursor: not-allowed;
-}
-
-/* Nollaa kaikki -nappi */
-.reset-controls button.reset-button {
-    background-color: #888;
-    color: white;
-}
-.reset-controls button.reset-button:hover {
-    background-color: #aaa;
+form button[type="submit"]:hover {
+    background-color: #45a049;
 }
 
 
-/* ... (loput vanhat CSS-säännöt: player, stat-block jne.) ... */
+/* === Pelaajalista === */
+.players {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 0; /* Erotin hoitaa välin */
+}
 
-/* Varmistetaan vielä player-korttien toimivuus */
+/* === Pelaajakortti === */
 .player {
   background: #1c1c1c;
   border: 1px solid #333;
@@ -150,41 +69,46 @@ hr.section-divider {
   font-size: 0.95rem;
   width: 260px;
   box-sizing: border-box;
-  position: relative;
+  position: relative; /* Poistonapille */
 }
 
 .player.on-court {
-  border-left-color: #2196f3;
-  background-color: #0067b9;
+  border-left-color: #2196f3; /* Kirkas sininen */
+  background-color: #0067b9; /* Tummempi sininen */
 }
 
 .player.bench {
-  border-left-color: #e53935;
-  background-color: #a10400;
+  border-left-color: #e53935; /* Kirkas punainen */
+  background-color: #a10400; /* Tummempi punainen */
 }
 
-.player.player-five-fouls{
-  border-left-color: #4f4f4f;
-  background-color: #2b2c2d;
+.player.player-five-fouls {
+  border-left-color: #4f4f4f; /* Harmaa */
+  background-color: #2b2c2d; /* Tumma harmaa */
+  /* Pidetään interaktiivisena, mutta statit disabloitu */
 }
 
 .player h3 {
   margin: 0 0 0.5rem 0;
   font-size: 1.1rem;
   text-align: center;
+  word-break: break-word; /* Rivitä pitkät nimet */
 }
 
 .player-layout {
   display: flex;
   justify-content: space-between;
   gap: 0.5rem;
+  align-items: center; /* Kohdista elementit pystysuunnassa */
 }
 
+/* Tilastolohkot (pisteet, virheet) */
 .stat-block {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: auto 1fr auto; /* ikoni, numero, napit */
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.4rem;
+  flex-grow: 1; /* Jakaa tilaa tasaisemmin */
 }
 
 .stat-block .icon {
@@ -195,6 +119,7 @@ hr.section-divider {
 
 .stat-block .big-number {
   font-size: 1.4rem;
+  font-weight: bold;
   text-align: center;
   grid-column: 2;
 }
@@ -214,69 +139,199 @@ hr.section-divider {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  line-height: 1.2; /* Varmistaa tasaisen korkeuden */
 }
 
 .stat-block .buttons-vertical button:hover {
   background: #666;
 }
 .stat-block .buttons-vertical button:disabled {
-    background: #333;
+    background: #303030; /* Tummempi harmaa disabloituna */
     color: #777;
     cursor: not-allowed;
 }
 
+/* Vaihtonappi (ikoni) */
 .substitute-block {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-width: 40px; /* Varaa tilaa ikonille */
 }
 
 .substitute-block .icon {
   font-size: 1.8rem;
-  margin-bottom: 0.3rem;
+  cursor: pointer; /* Oletuskursori */
+}
+.substitute-block .icon[style*="not-allowed"] { /* Tyyli kun ei sallittu */
+    cursor: not-allowed !important; /* Pakotetaan kursori */
+    opacity: 0.5; /* Himmennetään vähän */
 }
 
+/* === Erotinviiva === */
+hr.section-divider {
+    border: none;
+    border-top: 1px solid #444;
+    margin: 1.5rem 0;
+}
+
+/* === Pelin hallintanapit === */
+.game-controls {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* Salli rivitys */
+  gap: 0.8rem;
+}
+
+.game-controls button {
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  font-family: 'Orbitron', sans-serif;
+  transition: background-color 0.2s ease; /* Pehmeä siirtymä */
+}
+
+/* Aloitusnappi */
+.game-controls button#startGameBtn { background-color: #4CAF50; color: white; }
+.game-controls button#startGameBtn:disabled { background-color: #a5d6a7; color: #e8f5e9; cursor: not-allowed; }
+.game-controls button#startGameBtn:hover:not(:disabled) { background-color: #45a049; }
+
+/* Jaksonappi */
+.game-controls button#markPeriodBtn { background-color: #2196F3; color: white; }
+.game-controls button#markPeriodBtn:disabled:not(.marked) { background-color: #90caf9; color: #e3f2fd; cursor: not-allowed; }
+.game-controls button#markPeriodBtn:hover:not(:disabled) { background-color: #1976D2; }
+/* Jaksonapin "Merkitty!" tila */
+.game-controls button#markPeriodBtn.marked { background-color: #ffc107; color: #333; cursor: default; }
+
+/* Lopetusnappi */
+.game-controls button#endGameBtn { background-color: #f44336; color: white; }
+.game-controls button#endGameBtn:disabled { background-color: #ef9a9a; color: #ffebee; cursor: not-allowed; }
+.game-controls button#endGameBtn:hover:not(:disabled) { background-color: #d32f2f; }
+
+/* === Historiaosio === */
 .history {
-  margin-top: 0;
+  margin-top: 0; /* Erotin hoitaa */
   font-size: 0.9rem;
 }
-ul#historyList { /* Lisätään vähän pehmustetta historialistalle */
-    padding-left: 20px;
-    max-height: 300px; /* Rajoitetaan korkeutta ja lisätään scrollaus */
-    overflow-y: auto;
-    background-color: #1f1f1f; /* Pieni taustaväri erottumaan */
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap; /* Rivitä tarvittaessa */
+    gap: 0.5rem; /* Pieni väli */
+}
+
+.history-header h2 {
+    margin: 0;
+    text-align: left;
+    flex-grow: 1; /* Anna otsikon viedä tilaa */
+}
+
+.history-header button#copyHistoryBtn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    background-color: #555;
+    color: white;
+    border: none;
     border-radius: 4px;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+.history-header button#copyHistoryBtn:hover:not(:disabled) {
+    background-color: #777;
+}
+.history-header button#copyHistoryBtn:disabled {
+    background-color: #4CAF50; /* Vihreä kun kopioitu */
+    cursor: default;
+}
+
+/* Historialista */
+ul#historyList {
+    padding: 0.5rem 0.5rem 0.5rem 20px; /* Lisätty pehmustetta joka puolelle */
+    margin: 0 0 1rem 0; /* Väliä ennen nollausnappeja */
+    list-style: none; /* Poista oletuspallukat */
+    max-height: 300px;
+    overflow-y: auto;
+    background-color: #1f1f1f;
+    border: 1px solid #333; /* Lisätty pieni reunus */
+    border-radius: 4px;
+}
+ul#historyList li {
+    padding: 0.2rem 0; /* Pieni väli rivien välille */
+    border-bottom: 1px dotted #444; /* Hento erotin rivien väliin */
+}
+ul#historyList li:last-child {
+    border-bottom: none; /* Ei viivaa viimeisen jälkeen */
 }
 
 
+/* === Nollausnapit === */
+.reset-controls {
+    text-align: center;
+    margin-top: 1rem; /* Pienennetty väliä historiasta */
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.reset-controls button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    transition: background-color 0.2s ease;
+}
+
+/* Tyhjennä historia -nappi */
+.reset-controls button#clearHistoryBtn { background-color: #ff9800; color: white; }
+.reset-controls button#clearHistoryBtn:hover:not(:disabled) { background-color: #fb8c00; }
+.reset-controls button#clearHistoryBtn:disabled { background-color: #ffcc80; color: #fff3e0; cursor: not-allowed; }
+
+/* Nollaa kaikki -nappi */
+.reset-controls button.reset-button { background-color: #888; color: white; }
+.reset-controls button.reset-button:hover { background-color: #aaa; }
+
+
+/* === Responsiivisuus === */
 @media screen and (max-width: 600px) {
+  .container {
+      padding: 0.5rem; /* Vähemmän tyhjää tilaa */
+  }
+  h1 {
+      font-size: 1.5rem;
+  }
   .player {
-    width: 100%;
+    width: 100%; /* Vie koko leveyden */
   }
    form {
       flex-wrap: wrap;
    }
    form input[type="text"] {
        min-width: 150px;
+       flex-grow: 1; /* Anna venyä */
    }
-    /* Varmistetaan, että pelinapit mahtuvat paremmin pienellä näytöllä */
-   .game-controls {
+   /* Pienemmät napit mobiilissa */
+   .game-controls, .reset-controls {
        gap: 0.5rem;
    }
-   .game-controls button {
+   .game-controls button, .reset-controls button {
        padding: 0.5rem 0.8rem;
        font-size: 0.85rem;
    }
-    /* Sama reset-napeille */
-    .reset-controls {
-       gap: 0.5rem;
-   }
-   .reset-controls button {
-       padding: 0.5rem 0.8rem;
+   .history-header button#copyHistoryBtn {
+       padding: 0.3rem 0.6rem;
        font-size: 0.85rem;
    }
-
+   ul#historyList {
+       max-height: 250px; /* Matalammaksi mobiilissa */
+   }
 }
