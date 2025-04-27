@@ -4,6 +4,21 @@ let historyEntries = JSON.parse(localStorage.getItem('history')) || [];
 const playerForm = document.getElementById('playerForm');
 const playerList = document.getElementById('playerList');
 const historyList = document.getElementById('historyList');
+// Uudet nappi-elementit
+const startGameBtn = document.getElementById('startGameBtn');
+const endGameBtn = document.getElementById('endGameBtn');
+const copyHistoryBtn = document.getElementById('copyHistoryBtn');
+
+// --- Helper-funktio historian päivitykseen ja tallennukseen ---
+function logEvent(message) {
+  const time = new Date().toLocaleTimeString('fi-FI', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  const entry = `${time} – ${message}`;
+  historyEntries.unshift(entry); // Lisätään uusin tapahtuma listan alkuun
+  renderHistory();
+  saveData();
+}
+
+// --- Tapahtumankäsittelijät ---
 
 playerForm.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -20,21 +35,62 @@ playerForm.addEventListener('submit', (e) => {
     onCourt: false
   };
   players.push(player);
+  // Ei lisätä pelaajan lisäystä suoraan historiaan, ellei haluta
   renderPlayers();
-  saveData();
+  saveData(); // Tallennetaan pelaajalista
   playerForm.reset();
 });
 
+startGameBtn.addEventListener('click', () => {
+  logEvent('Peli alkoi');
+  startGameBtn.disabled = true;
+  endGameBtn.disabled = false;
+});
+
+endGameBtn.addEventListener('click', () => {
+  logEvent('Peli päättyi');
+  startGameBtn.disabled = false; // Sallitaan uuden pelin aloitus
+  endGameBtn.disabled = true;
+});
+
+copyHistoryBtn.addEventListener('click', () => {
+  // Muodostetaan kopioitava teksti historian merkinnöistä (uusin ensin)
+  // Jos halutaan vanhin ensin: historyEntries.slice().reverse().join('\n')
+  const historyText = historyEntries.join('\n');
+
+  navigator.clipboard.writeText(historyText)
+    .then(() => {
+      // Annetaan käyttäjälle palautetta onnistumisesta
+      const originalText = copyHistoryBtn.textContent;
+      copyHistoryBtn.textContent = 'Kopioitu!';
+      copyHistoryBtn.disabled = true; // Estetään turhat tuplaklikkaukset
+      setTimeout(() => {
+        copyHistoryBtn.textContent = originalText;
+        copyHistoryBtn.disabled = false;
+      }, 1500); // Palautetaan teksti 1.5 sekunnin kuluttua
+    })
+    .catch(err => {
+      console.error('Historian kopiointi epäonnistui: ', err);
+      alert('Kopiointi epäonnistui. Tarkista selaimen oikeudet.');
+    });
+});
+
+// --- Pelaajien renderöinti (ennallaan, mutta käyttää logEventia) ---
+
 function renderPlayers() {
   playerList.innerHTML = '';
-  players.forEach(p => {
+  // Järjestetään pelaajat numerojärjestykseen ennen renderöintiä
+  const sortedPlayers = [...players].sort((a, b) => parseInt(a.number) - parseInt(b.number));
+
+  sortedPlayers.forEach(p => {
     const div = document.createElement('div');
     div.className = `player ${p.onCourt ? 'on-court' : 'bench'}`;
     div.style.position = 'relative';
 
     if (Number(p.fouls) >= 5) {
       div.className = `player player-five-fouls`;
-      div.style.opacity = '0.5';
+      // Ei enää opacityä, koska värit vaihdettu
+      // div.style.opacity = '0.5';
     }
 
     div.innerHTML = `
@@ -45,7 +101,7 @@ function renderPlayers() {
           <div class="big-number">${p.points}</div>
           <div class="buttons-vertical">
             <button onclick="changePoints(${p.id}, 1)" ${p.fouls >= 5 || !p.onCourt ? 'disabled' : ''}>＋</button>
-            <button onclick="changePoints(${p.id}, -1)" ${p.fouls >= 5 || !p.onCourt ? 'disabled' : ''}>－</button>
+            <button onclick="changePoints(${p.id}, -1)" ${p.fouls >= 5 || !p.onCourt || p.points <= 0 ? 'disabled' : ''}>－</button> <!-- Lisätty ehto: pisteitä oltava > 0 -->
           </div>
         </div>
         <div class="stat-block">
@@ -53,7 +109,7 @@ function renderPlayers() {
           <div class="big-number">${p.fouls}</div>
           <div class="buttons-vertical">
             <button onclick="changeFouls(${p.id}, 1)" ${p.fouls >= 5 || !p.onCourt ? 'disabled' : ''}>＋</button>
-            <button onclick="changeFouls(${p.id}, -1)">－</button>
+            <button onclick="changeFouls(${p.id}, -1)" ${p.fouls <= 0 ? 'disabled' : ''}>－</button> <!-- Lisätty ehto: virheitä oltava > 0 -->
           </div>
         </div>
         <div class="substitute-block">
@@ -78,6 +134,8 @@ function renderPlayers() {
       color: 'white',
       fontSize: '1.2rem',
       cursor: 'pointer',
+      padding: '0', // Poistetaan ylimääräinen padding
+      lineHeight: '1' // Varmistetaan, ettei korkeus kasva
     });
 
     div.appendChild(removeButton);
@@ -85,56 +143,78 @@ function renderPlayers() {
   });
 }
 
+// --- Muut toiminnot (käyttävät logEventia) ---
+
 function changePoints(id, amount) {
   const player = players.find(p => p.id === id);
   if (!player || player.fouls >= 5 || !player.onCourt) return;
+
+  const oldPoints = player.points;
   player.points = Math.max(0, player.points + amount);
-  renderPlayers();
-  saveData();
+
+  // Lisätään tapahtuma historiaan VAIN jos pisteet muuttuivat
+  if (player.points !== oldPoints) {
+    logEvent(`#${player.number} ${player.name} ${amount > 0 ? 'teki pisteen' : 'piste poistettu'} (Yht: ${player.points})`);
+  }
+
+  renderPlayers(); // logEvent hoitaa tallennuksen ja historian renderöinnin
+  // Ei tarvita saveData()-kutsua tässä, koska logEvent tekee sen
 }
 
 function changeFouls(id, amount) {
   const player = players.find(p => p.id === id);
   if (!player) return;
-  const previousFouls = player.fouls;
-  player.fouls = Math.max(0, player.fouls + amount);
 
-  if (player.fouls >= 5 && previousFouls < 5) {
-    const entry = `${player.name} – virheet täynnä!`;
-    if (!historyEntries.includes(entry)) {
-      historyEntries.unshift(entry);
-    }
+  const previousFouls = player.fouls;
+  const newFouls = Math.max(0, player.fouls + amount);
+
+  // Lisätään tapahtuma historiaan VAIN jos virheet muuttuivat
+  if (newFouls !== previousFouls) {
+      player.fouls = newFouls; // Päivitetään virheet vasta tässä
+
+      // Logataan virheen lisäys/poisto
+       logEvent(`#${player.number} ${player.name} ${amount > 0 ? 'sai virheen' : 'virhe poistettu'} (Yht: ${player.fouls})`);
+
+      // Tarkistetaan ja logataan, jos virheet tulivat täyteen
+      if (player.fouls >= 5 && previousFouls < 5) {
+          logEvent(`#${player.number} ${player.name} – VIRHEET TÄYNNÄ!`);
+          // Automaattinen vaihto penkille, jos oli kentällä
+          if(player.onCourt) {
+              player.onCourt = false;
+              logEvent(`#${player.number} ${player.name} automaattisesti penkille (5 virhettä)`);
+          }
+      }
   }
 
-  renderPlayers();
-  renderHistory();
-  saveData();
+  renderPlayers(); // logEvent hoitaa tallennuksen ja historian renderöinnin
+  // Ei tarvita saveData()-kutsua tässä, koska logEvent tekee sen
+  // renderHistory() kutsutaan logEventin sisällä
 }
 
 function toggleCourt(id) {
   const player = players.find(p => p.id === id);
   if (!player || player.fouls >= 5) return;
   player.onCourt = !player.onCourt;
-  const time = new Date().toLocaleTimeString();
-  const log = `${time} – #${player.number} ${player.name} ${player.onCourt ? 'kentälle' : 'penkille'}`;
-  historyEntries.unshift(log);
-  renderHistory();
+  // Käytetään logEvent-funktiota
+  logEvent(`#${player.number} ${player.name} ${player.onCourt ? 'kentälle' : 'penkille'}`);
   renderPlayers();
-  saveData();
+  // Ei tarvita renderHistory() tai saveData() tässä, logEvent hoitaa ne
 }
 
 function removePlayer(id) {
   const player = players.find(p => p.id === id);
   if (!player) return;
-  if (confirm(`Oletko varma että haluat poistaa ${player.name}?`)) {
+  if (confirm(`Oletko varma että haluat poistaa pelaajan #${player.number} ${player.name}? Tämä poistaa pelaajan pysyvästi.`)) {
+    logEvent(`Pelaaja #${player.number} ${player.name} poistettu`); // Logataan poisto
     players = players.filter(p => p.id !== id);
     renderPlayers();
-    saveData();
+    // Ei tarvita saveData() tässä, logEvent hoitaa sen
   }
 }
 
 function renderHistory() {
   historyList.innerHTML = '';
+  // Näytetään historia aikajärjestyksessä (uusin ylinnä, koska lisätään unshiftillä)
   historyEntries.forEach(entry => {
     const li = document.createElement('li');
     li.textContent = entry;
@@ -148,14 +228,44 @@ function saveData() {
 }
 
 function resetData() {
-  if (confirm('Haluatko varmasti tyhjentää kaikki tiedot?')) {
+  if (confirm('Haluatko varmasti tyhjentää KAIKKI tiedot (pelaajat ja historian)? Tätä ei voi perua.')) {
     players = [];
     historyEntries = [];
     saveData();
     renderPlayers();
     renderHistory();
+    // Palautetaan nappien tila alkutilaan
+    startGameBtn.disabled = false;
+    endGameBtn.disabled = true;
+    console.log('Kaikki data nollattu.');
   }
 }
 
-renderPlayers();
-renderHistory();
+// --- Alustus sivun latautuessa ---
+function initializeApp() {
+    renderPlayers();
+    renderHistory();
+
+    // Asetetaan nappien tila sen mukaan, onko peli jo käynnissä historian perusteella
+    const gameStarted = historyEntries.some(entry => entry.includes('Peli alkoi'));
+    const gameEnded = historyEntries.some(entry => entry.includes('Peli päättyi'));
+
+    if (gameStarted && !gameEnded) {
+        // Peli on käynnissä
+        startGameBtn.disabled = true;
+        endGameBtn.disabled = false;
+    } else {
+        // Peli ei ole käynnissä (joko ei aloitettu tai jo lopetettu)
+        startGameBtn.disabled = false;
+        endGameBtn.disabled = true;
+    }
+     // Jos viimeisin tapahtuma on "Peli päättyi", pidetään aloitusnappi aktiivisena.
+    if (historyEntries.length > 0 && historyEntries[0].includes('Peli päättyi')) {
+        startGameBtn.disabled = false;
+        endGameBtn.disabled = true;
+    }
+
+}
+
+// Käynnistetään sovellus
+initializeApp();
