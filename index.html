@@ -16,13 +16,20 @@
       <button type="submit">+</button>
     </form>
 
-    <div id="playerList" class="players"></div>
+    <div id="playerList" class="players">
+        <!-- Pelaajakortit tulevat tänne -->
+    </div>
 
-    <!-- UUDET NAPIT TÄSSÄ -->
+    <!-- Erotinviiva pelaajien ja pelinappien väliin -->
+    <hr class="section-divider">
+
     <div class="game-controls">
         <button id="startGameBtn">▶️ Aloita peli</button>
         <button id="endGameBtn" disabled>⏹️ Lopeta peli</button>
     </div>
+
+    <!-- Erotinviiva pelinappien ja historian väliin -->
+    <hr class="section-divider">
 
     <div class="history">
        <div class="history-header">
@@ -31,7 +38,13 @@
        </div>
       <ul id="historyList"></ul>
     </div>
-    <center><button onclick="resetData()" class="reset-button">Nollaa kaikki</button></center>
+
+    <!-- Nollausnapit omassa lohkossa -->
+    <div class="reset-controls">
+        <button id="clearHistoryBtn">Tyhjennä historia</button>
+        <button onclick="resetData()" class="reset-button">Nollaa kaikki</button>
+    </div>
+
   </div>
   <script src="script.js"></script>
 </body>
