@@ -58,8 +58,6 @@ markPeriodBtn.addEventListener('click', () => {
     setTimeout(() => {
         markPeriodBtn.textContent = originalText;
         markPeriodBtn.classList.remove('marked');
-        // Tarkistetaan TÄMÄN HETKINEN pelin tila ENNEN enablointia
-        // Peli on käynnissä, jos Aloita-nappi ON disabled.
         const isGameStillRunning = startGameBtn.disabled;
         if (isGameStillRunning) {
             markPeriodBtn.disabled = false; // Enabloidaan vain jos peli yhä käy
@@ -109,10 +107,9 @@ function renderPlayers() {
     const div = document.createElement('div');
     const isOnCourt = p.onCourt;
     const hasMaxFouls = p.fouls >= 5;
-    const canScore = isOnCourt && !hasMaxFouls; // Voiko pelaaja tehdä pisteitä/saada virheitä
+    const canScore = isOnCourt && !hasMaxFouls;
 
     div.className = `player ${isOnCourt ? 'on-court' : 'bench'}`;
-    // Nyt kun virheet nollataan historian tyhjennyksessä, tämä tila voi taas poistua
     if (hasMaxFouls) {
         div.className = `player player-five-fouls`;
     }
@@ -208,10 +205,14 @@ function changeFouls(id, amount) {
 
 function toggleCourt(id) {
   const player = players.find(p => p.id === id);
-  // TÄRKEÄÄ: Tarkistetaan virheet ENNEN vaihdon sallimista
-  if (!player || player.fouls >= 5) {
-      alert(`Pelaajalla #${player.number} ${player.name} on virheet täynnä, ei voi laittaa kentälle.`);
-      return;
+  if (!player) return; // Lisätty tarkistus, jos pelaajaa ei löydy
+  if (player.fouls >= 5) {
+      // Estetään kentälle meno, jos virheet täynnä
+      if (!player.onCourt) { // Vain jos yritetään laittaa kentälle
+         alert(`Pelaajalla #${player.number} ${player.name} on virheet täynnä, ei voi laittaa kentälle.`);
+         return;
+      }
+      // Penkille voi mennä vaikka virheet olisivat täynnä
   }
 
   const currentlyOnCourt = players.filter(p => p.onCourt).length;
@@ -251,17 +252,18 @@ function saveData() {
   localStorage.setItem('history', JSON.stringify(historyEntries));
 }
 
-// KORJATTU: Funktio vain historian tyhjentämiseen (nollaa myös virheet)
+// KORJATTU JA LAAJENNETTU: Funktio vain historian tyhjentämiseen (nollaa virheet JA pisteet)
 function clearHistory() {
     if (historyEntries.length === 0) {
         return; // Ei tehdä mitään, jos historia on jo tyhjä
     }
-    // Päivitetään vahvistuskysymys kertomaan virheiden nollauksesta
-    if (confirm('Haluatko varmasti tyhjentää VAIN historian? Pelaajat siirretään penkille ja heidän virheensä nollataan.')) {
+    // Päivitetään vahvistuskysymys kertomaan myös pisteiden nollauksesta
+    if (confirm('Haluatko varmasti tyhjentää VAIN historian? Pelaajat siirretään penkille, ja heidän virheensä sekä pisteensä nollataan.')) {
         historyEntries = []; // Tyhjennä historia-array
 
         let playersMoved = 0;
         let foulsWereReset = false;
+        let pointsWereReset = false; // Lisätty seuranta pisteille
 
         // Käy läpi KAIKKI pelaajat
         players.forEach(p => {
@@ -270,32 +272,35 @@ function clearHistory() {
                 p.onCourt = false;
                 playersMoved++;
             }
-            // 2. NOLLAA VIRHEET kaikilta pelaajilta
+            // 2. NOLLAA VIRHEET
             if (p.fouls > 0) {
                 p.fouls = 0;
                 foulsWereReset = true;
             }
+            // 3. NOLLAA PISTEET <<< LISÄTTY TÄMÄ
+            if (p.points > 0) {
+                p.points = 0;
+                pointsWereReset = true;
+            }
         });
 
-        if (playersMoved > 0) {
-            console.log(`Siirretty ${playersMoved} pelaajaa penkille.`);
-        }
-        if (foulsWereReset) {
-            console.log(`Kaikkien pelaajien virheet nollattu.`);
-        }
+        // Tulostetaan konsoliin tietoa tehdyistä muutoksista
+        if (playersMoved > 0) { console.log(`Siirretty ${playersMoved} pelaajaa penkille.`); }
+        if (foulsWereReset) { console.log(`Kaikkien pelaajien virheet nollattu.`); }
+        if (pointsWereReset) { console.log(`Kaikkien pelaajien pisteet nollattu.`); } // Lisätty loki
 
-        // Tallenna muutokset (tyhjä historia ja päivitetyt pelaajatiedot: penkillä, 0 virhettä)
+        // Tallenna muutokset (tyhjä historia ja päivitetyt pelaajatiedot: penkillä, 0 virhettä, 0 pistettä)
         saveData();
 
         // Päivitä käyttöliittymä
-        renderHistory(); // Näyttää tyhjän historian (ja päivittää clear/copy-napit)
-        renderPlayers(); // Näyttää kaikki pelaajat penkillä JA nollatuilla virheillä
+        renderHistory();
+        renderPlayers(); // Näyttää kaikki pelaajat penkillä, 0 virhettä JA 0 pistettä
 
-        // Aseta pelinapit alkutilanteeseen (peli ei käynnissä)
+        // Aseta pelinapit alkutilanteeseen
         updateButtonStates(false);
 
         // Päivitetään alert-viesti
-        alert('Historia tyhjennetty, pelaajat siirretty penkille ja virheet nollattu. Voit aloittaa uuden pelin.');
+        alert('Historia tyhjennetty, pelaajat siirretty penkille, virheet ja pisteet nollattu. Voit aloittaa uuden pelin.');
     }
 }
 
@@ -329,7 +334,6 @@ function initializeApp() {
     renderPlayers();
     renderHistory(); // Tämä asettaa myös clear/copy-nappien tilan
 
-    // Päätellään pelin tila viimeisimmästä relevantista tapahtumasta
     const lastGameEvent = historyEntries.find(entry => entry.includes('Peli alkoi') || entry.includes('Peli päättyi'));
     let gameIsRunning = false;
     if (lastGameEvent && lastGameEvent.includes('Peli alkoi')) {
