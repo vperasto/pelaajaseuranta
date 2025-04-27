@@ -1,3 +1,6 @@
+/* === Koko styles.css alla === */
+
+/* === Alkuperäiset ja aiemmin lisätyt tyylit === */
 body {
   margin: 0;
   font-family: 'Orbitron', sans-serif;
@@ -19,9 +22,10 @@ h1, h2 {
 form {
   display: flex;
   gap: 0.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
   margin-bottom: 1rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
 }
 
 form input, form button {
@@ -34,6 +38,7 @@ form input, form button {
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
+  margin-bottom: 0; /* Poistetaan marginaali, erotin hoitaa välin */
 }
 
 .player {
@@ -45,6 +50,7 @@ form input, form button {
   font-size: 0.95rem;
   width: 260px;
   box-sizing: border-box;
+  position: relative;
 }
 
 .player.on-court {
@@ -57,7 +63,7 @@ form input, form button {
   background-color: #a10400;
 }
 
-.player-five-fouls{
+.player.player-five-fouls{
   border-left-color: #4f4f4f;
   background-color: #2b2c2d;
 }
@@ -84,6 +90,7 @@ form input, form button {
 .stat-block .icon {
   font-size: 1.5rem;
   grid-column: 1;
+  text-align: center;
 }
 
 .stat-block .big-number {
@@ -112,6 +119,11 @@ form input, form button {
 .stat-block .buttons-vertical button:hover {
   background: #666;
 }
+.stat-block .buttons-vertical button:disabled {
+    background: #333;
+    color: #777;
+    cursor: not-allowed;
+}
 
 .substitute-block {
   display: flex;
@@ -125,45 +137,38 @@ form input, form button {
   margin-bottom: 0.3rem;
 }
 
-.substitute-block button {
-  background: #555;
-  color: white;
-  border: none;
-  padding: 0.3rem 0.5rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.substitute-block button:hover {
-  background: #777;
-}
-
 .history {
-  margin-top: 2rem;
+  margin-top: 0; /* Poistetaan marginaali, erotin hoitaa välin */
   font-size: 0.9rem;
-}
-form {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: nowrap;
 }
 
 @media screen and (max-width: 600px) {
   .player {
     width: 100%;
   }
+   form {
+      flex-wrap: wrap;
+   }
+   form input[type="text"] {
+       min-width: 150px;
+   }
 }
-/* Lisää nämä säännöt styles.css-tiedoston loppuun */
 
+/* === Erotinviivan tyyli === */
+hr.section-divider {
+    border: none;
+    border-top: 1px solid #444; /* Ohut harmaa viiva */
+    margin: 1.5rem 0; /* Lisää tilaa ylä- ja alapuolelle */
+}
+
+/* === Pelinappien tyylit (pieni muokkaus marginaaleihin) === */
 .game-controls {
   text-align: center;
-  margin-bottom: 1.5rem; /* Lisää tilaa pelaajien ja historian väliin */
-  display: flex; /* Asettaa napit vierekkäin */
-  justify-content: center; /* Keskittää napit */
-  gap: 1rem; /* Väliä nappien välille */
+  /* margin-bottom: 1.5rem; */ /* Poistettu, erotin hoitaa */
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  /* Ei tarvita enää ylämarginaalia, koska erotin on yläpuolella */
 }
 
 .game-controls button {
@@ -172,104 +177,30 @@ form {
   cursor: pointer;
   border: none;
   border-radius: 5px;
-  font-family: 'Orbitron', sans-serif; /* Varmistetaan fontti */
+  font-family: 'Orbitron', sans-serif;
 }
 
 .game-controls button#startGameBtn {
-    background-color: #4CAF50; /* Vihreä */
+    background-color: #4CAF50;
     color: white;
 }
 .game-controls button#startGameBtn:disabled {
-    background-color: #a5d6a7; /* Haalea vihreä */
+    background-color: #a5d6a7;
+    color: #e8f5e9;
     cursor: not-allowed;
 }
 
 .game-controls button#endGameBtn {
-    background-color: #f44336; /* Punainen */
+    background-color: #f44336;
     color: white;
 }
-
 .game-controls button#endGameBtn:disabled {
-    background-color: #ef9a9a; /* Haalea punainen */
+    background-color: #ef9a9a;
+    color: #ffebee;
     cursor: not-allowed;
 }
 
-
-.history-header {
-    display: flex;
-    justify-content: space-between; /* Asettaa H2:n ja napin reunoille */
-    align-items: center; /* Tasaa pystysuunnassa */
-    margin-bottom: 0.5rem; /* Pieni väli listaan */
-}
-
-.history-header h2 {
-    margin: 0; /* Poistaa oletusmarginaalin H2:lta */
-    text-align: left; /* Palautetaan otsikko vasemmalle */
-}
-
-.history-header button#copyHistoryBtn {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.9rem;
-    cursor: pointer;
-    background-color: #555;
-    color: white;
-    border: none;
-    border-radius: 4px;
-}
-.history-header button#copyHistoryBtn:hover {
-    background-color: #777;
-}
-
-.reset-button { /* Lisätään vähän marginaalia reset-napille */
-    margin-top: 1rem;
-    padding: 0.5rem 1rem; /* Sama koko kuin muilla napeilla */
-    background-color: #888;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.reset-button:hover {
-    background-color: #aaa;
-}
-
-/* Muokataan vielä formin alle jäävää marginaalia */
-form {
-  /* margin-bottom: 1.5rem; */ /* Poistetaan tai pienennetään tätä, koska .game-controls lisää jo tilaa */
-  margin-bottom: 1rem;
-}
-
-/* Korjataan historiaotsikon keskitys, jos halutaan edelleen keskelle */
-/* Jos haluat H2:n keskelle ja napin oikealle: */
-/*
-.history-header {
-    position: relative;
-    text-align: center;
-    margin-bottom: 0.5rem;
-}
-.history-header h2 {
-    margin: 0;
-    display: inline-block;
-}
-.history-header button#copyHistoryBtn {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 0.4rem 0.8rem;
-    font-size: 0.9rem;
-    cursor: pointer;
-    background-color: #555;
-    color: white;
-    border: none;
-    border-radius: 4px;
-}
-.history-header button#copyHistoryBtn:hover {
-    background-color: #777;
-}
-*/
-
-/* Käytetään aiempaa flexbox-ratkaisua, joka asettaa otsikon vasemmalle ja napin oikealle */
+/* === Historian otsikon ja kopiointinapin tyylit === */
 .history-header {
     display: flex;
     justify-content: space-between;
@@ -278,6 +209,28 @@ form {
 }
 .history-header h2 {
     margin: 0;
-    text-align: left; /* Varmistetaan, ettei keskitys periydy */
+    text-align: left;
 }
-/* Kopiointinappi pysyy oikealla */
+.history-header button#copyHistoryBtn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+.history-header button#copyHistoryBtn:hover {
+    background-color: #777;
+}
+.history-header button#copyHistoryBtn:disabled {
+    background-color: #4CAF50;
+    cursor: default;
+}
+
+/* === Nollausnappien keskitys ja tyylit === */
+.reset-controls {
+    text-align: center; /* Keskittää napit divin sisällä */
+    margin-top: 2rem; /* Tilaa historian jälkeen */
+    display: flex; /* Asettaa napit vierekkäin */
+    justify-content: center; /* Keskittää napit vaak
