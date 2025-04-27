@@ -20,15 +20,15 @@
         <!-- Pelaajakortit tulevat tänne -->
     </div>
 
-    <!-- Erotinviiva pelaajien ja pelinappien väliin -->
     <hr class="section-divider">
 
     <div class="game-controls">
         <button id="startGameBtn">▶️ Aloita peli</button>
+        <!-- UUSI NAPPI TÄSSÄ -->
+        <button id="markPeriodBtn" disabled>⏱️ Merkitse Jakso</button>
         <button id="endGameBtn" disabled>⏹️ Lopeta peli</button>
     </div>
 
-    <!-- Erotinviiva pelinappien ja historian väliin -->
     <hr class="section-divider">
 
     <div class="history">
@@ -39,7 +39,6 @@
       <ul id="historyList"></ul>
     </div>
 
-    <!-- Nollausnapit omassa lohkossa -->
     <div class="reset-controls">
         <button id="clearHistoryBtn">Tyhjennä historia</button>
         <button onclick="resetData()" class="reset-button">Nollaa kaikki</button>
