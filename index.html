@@ -10,18 +10,29 @@
 <body>
   <div class="container">
     <h1>Pelaajaseuranta</h1>
-   <form id="playerForm">
-     <input type="number" id="playerNumber" placeholder="nro" required style="width: 40px;" />
-     <input type="text" id="playerName" placeholder="Pelaaja" required style="flex: 1;" />
-     <button type="submit">+</button>
-   </form>
+    <form id="playerForm">
+      <input type="number" id="playerNumber" placeholder="nro" required style="width: 40px;" />
+      <input type="text" id="playerName" placeholder="Pelaaja" required style="flex: 1;" />
+      <button type="submit">+</button>
+    </form>
 
     <div id="playerList" class="players"></div>
+
+    <!-- UUDET NAPIT TÄSSÄ -->
+    <div class="game-controls">
+        <button id="startGameBtn">▶️ Aloita peli</button>
+        <button id="endGameBtn" disabled>⏹️ Lopeta peli</button>
+    </div>
+
     <div class="history">
-      <h2>Vaihtohistoria</h2>
+       <div class="history-header">
+           <h2>Vaihtohistoria</h2>
+           <button id="copyHistoryBtn" title="Kopioi historia leikepöydälle">📋 Kopioi</button>
+       </div>
       <ul id="historyList"></ul>
     </div>
-    <center><button onclick="resetData()">Nollaa kaikki</button></center>
-  </div>  <script src="script.js"></script>
+    <center><button onclick="resetData()" class="reset-button">Nollaa kaikki</button></center>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
